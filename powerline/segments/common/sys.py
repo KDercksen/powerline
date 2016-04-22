@@ -24,6 +24,8 @@ def fs_available_space(pl, disp_prefix='', path='/'):
 		path to return free space of
 	:param str disp_prefix:
 		string to prefix available size with
+
+	Highlight groups used: ``diskspace_gradient`` (gradient) or ``diskspace``.
 	'''
 	statvfs = os.statvfs(path)
 	totalsize = statvfs.f_frsize * statvfs.f_blocks
