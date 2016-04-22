@@ -53,7 +53,8 @@ def workspaces(pl, segment_info, only_show=None, output=None, strip=0):
 	return [
 		{
 			'contents': w['name'][strip:],
-			'highlight_groups': workspace_groups(w)
+			'highlight_groups': workspace_groups(w),
+			'draw_inner_divider': True,
 		}
 		for w in get_i3_connection().get_workspaces()
 		if ((not only_show or any(w[typ] for typ in only_show))
