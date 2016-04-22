@@ -5,12 +5,37 @@ import os
 
 from multiprocessing import cpu_count as _cpu_count
 
+from powerline.lib.humanize_bytes import humanize_bytes
 from powerline.lib.threaded import ThreadedSegment
 from powerline.lib import add_divider_highlight_group
 from powerline.segments import with_docstring
 
 
 cpu_count = None
+
+
+def fs_available_space(pl, disp_prefix='', path='/'):
+	'''Return available space in path.
+	
+	Highlights using ``diskspace_gradient`` and ``diskspace`` highlighting
+	groups.
+	
+	:param str path:
+		path to return free space of
+	:param str disp_prefix:
+		string to prefix available size with
+	'''
+	statvfs = os.statvfs(path)
+	totalsize = statvfs.f_frsize * statvfs.f_blocks
+	available = statvfs.f_frsize * statvfs.f_bavail
+	gradient_level = 100 - int((available / totalsize) * 100)
+	return [
+	    {
+		'contents': disp_prefix + humanize_bytes(available),
+		'highlight_groups': ['diskspace_gradient', 'diskspace'],
+		'gradient_level': gradient_level,
+	    }
+	]
 
 
 def system_load(pl, format='{avg:.1f}', threshold_good=1, threshold_bad=2,
